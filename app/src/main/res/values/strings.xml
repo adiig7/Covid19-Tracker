@@ -11,4 +11,8 @@
     <string name="state_ut">STATE/UT</string>
     <string name="rcvrd">RCVRD</string>
     <string name="dcsd">DCSD</string>
+    <string name="default_notification_channel_id">default</string>
+    <string name="text_confirmed_cases">Confirmed Cases : %s</string>
+    <string name="text_last_updated">Last Updated : %s</string>
+    <string name="default_notification_channel_name">Covid-19 India</string>
 </resources>

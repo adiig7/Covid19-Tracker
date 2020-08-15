@@ -3,12 +3,14 @@ package com.example.covidtracker
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.AbsListView
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -17,18 +19,38 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var stateAdapter: StateAdapter
 
+    @InternalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        list.addHeaderView(LayoutInflater.from(this).inflate(R.layout.list_header, list,false))
+        list.addHeaderView(LayoutInflater.from(this).inflate(R.layout.list_header, list, false))
 
         fetchResults()
+        swipeToRefresh.setOnRefreshListener {
+            fetchResults()
+        }
+        initWorker()
+        list.setOnScrollListener(object : AbsListView.OnScrollListener {
+            override fun onScrollStateChanged(view: AbsListView, scrollState: Int) {}
+            override fun onScroll(
+                view: AbsListView,
+                firstVisibleItem: Int,
+                visibleItemCount: Int,
+                totalItemCount: Int
+            ) {
+                if (list.getChildAt(0) != null) {
+                    swipeToRefresh.isEnabled = list.firstVisiblePosition === 0 && list.getChildAt(
+                        0
+                    ).getTop() === 0
+                }
+            }
+        })
     }
 
     private fun fetchResults() {
         GlobalScope.launch {
-            val response = withContext(Dispatchers.IO) { Client.api.execute() }
+            val response = withContext(Dispatchers.IO) { Client.api.clone().execute() }
             if (response.isSuccessful) {
                 val data = Gson().fromJson(response.body?.string(), Response::class.java)
                 launch(Dispatchers.Main) {
@@ -53,8 +75,26 @@ class MainActivity : AppCompatActivity() {
         activeTv.text = data.active
         recoveredTv.text = data.recovered
         deceasedTv.text = data.deaths
-
     }
+
+    @InternalCoroutinesApi
+    private fun initWorker() {
+        val constraints = androidx.work.Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val notificationWorkRequest =
+            PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .build()
+
+        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+            "JOB_TAG",
+            ExistingPeriodicWorkPolicy.KEEP,
+            notificationWorkRequest
+        )
+    }
+}
 
     fun getTimeAgo(past: Date): String {
         val now = Date()
@@ -77,4 +117,3 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-}
