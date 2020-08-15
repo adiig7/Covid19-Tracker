@@ -2,6 +2,7 @@ package com.example.covidtracker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
@@ -13,9 +14,14 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var stateAdapter: StateAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        list.addHeaderView(LayoutInflater.from(this).inflate(R.layout.list_header, list,false))
 
         fetchResults()
     }
@@ -27,15 +33,26 @@ class MainActivity : AppCompatActivity() {
                 val data = Gson().fromJson(response.body?.string(), Response::class.java)
                 launch(Dispatchers.Main) {
                     bindCombinedData(data.statewise[0])
+                    bindStateWiseData(data.statewise.subList(0, data.statewise.size))
                 }
             }
         }
+    }
+
+    private fun bindStateWiseData(subList: List<StatewiseItem>) {
+        stateAdapter = StateAdapter(subList)
+        list.adapter = stateAdapter
     }
 
     private fun bindCombinedData(data: StatewiseItem) {
         val lastUpdatedTime = data.lastupdatedtime
         val simpleDateFormat = SimpleDateFormat("dd/MM/yy hh:mm:ss")
         lastUpdatedTv.text = "Last updated\n ${getTimeAgo(simpleDateFormat.parse(lastUpdatedTime))}"
+
+        confirmedTv.text = data.confirmed
+        activeTv.text = data.active
+        recoveredTv.text = data.recovered
+        deceasedTv.text = data.deaths
 
     }
 

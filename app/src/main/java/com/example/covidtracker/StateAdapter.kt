@@ -14,6 +14,7 @@ class StateAdapter (val list: List<StatewiseItem>): BaseAdapter(){
         view.activeTv.text = item.active
         view.recoveredTv.text = item.recovered
         view.deceasedTv.text = item.deaths
+        view.stateTv.text = item.state
         return view
     }
 
@@ -21,8 +22,5 @@ class StateAdapter (val list: List<StatewiseItem>): BaseAdapter(){
 
     override fun getItemId(position: Int) = position.toLong()
 
-    override fun getCount(): Int {
-        TODO("Not yet implemented")
-    }
-
+    override fun getCount(): Int = list.size
 }
