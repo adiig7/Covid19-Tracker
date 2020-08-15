@@ -6,4 +6,9 @@
     <string name="active">Active</string>
     <string name="recovered">Recovered</string>
     <string name="deceased">Deceased</string>
+    <string name="actv">ACTV</string>
+    <string name="cnfmd">CNFMD</string>
+    <string name="state_ut">STATE/UT</string>
+    <string name="rcvrd">RCVRD</string>
+    <string name="dcsd">DCSD</string>
 </resources>
