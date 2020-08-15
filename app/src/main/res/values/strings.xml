@@ -2,4 +2,8 @@
     <string name="app_name">Covid Tracker</string>
     <string name="last_updated">Last Updated</string>
     <string name="india_covid_19_ntracker">India covid-19 \nTracker</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="active">Active</string>
+    <string name="recovered">Recovered</string>
+    <string name="deceased">Deceased</string>
 </resources>

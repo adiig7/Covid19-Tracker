@@ -29,14 +29,16 @@
         android:textAllCaps="true"
         android:textColor="@color/dark_green"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:ignore="RelativeOverlap" />
 
     <LinearLayout
         android:id="@+id/topContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textView"
-        android:layout_margin="16dp">
+        android:layout_margin="16dp"
+        android:baselineAligned="false">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -48,7 +50,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Confirmed"
+            android:text="@string/confirmed"
             android:textAllCaps="true"
             android:textColor="@color/dark_red"
             android:textSize="14sp"
@@ -59,7 +61,8 @@
             android:layout_height="50dp"
             android:layout_marginTop="4dp"
             android:src="@drawable/ic_virus"
-            app:tint="@color/dark_red" />
+            app:tint="@color/dark_red"
+            android:contentDescription="@string/confirmed" />
 
         <TextView
             android:id="@+id/confirmedTv"
@@ -84,7 +87,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Active"
+            android:text="@string/active"
             android:textAllCaps="true"
             android:textColor="@color/dark_blue"
             android:textSize="14sp"
@@ -95,7 +98,8 @@
             android:layout_height="50dp"
             android:layout_marginTop="4dp"
             android:src="@drawable/ic_patient"
-            app:tint="@color/dark_blue" />
+            app:tint="@color/dark_blue"
+            android:contentDescription="@string/active" />
 
         <TextView
             android:id="@+id/activeTv"
@@ -121,7 +125,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Recovered"
+            android:text="@string/recovered"
             android:textAllCaps="true"
             android:textColor="@color/dark_green"
             android:textSize="14sp"
@@ -132,7 +136,8 @@
             android:layout_height="50dp"
             android:layout_marginTop="4dp"
             android:src="@drawable/ic_heart"
-            app:tint="@color/dark_green" />
+            app:tint="@color/dark_green"
+            android:contentDescription="@string/recovered" />
 
         <TextView
             android:id="@+id/recoveredTv"
@@ -158,7 +163,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Deceased"
+            android:text="@string/deceased"
             android:textAllCaps="true"
             android:textColor="@color/dark_yellow"
             android:textSize="14sp"
@@ -169,7 +174,8 @@
             android:layout_height="50dp"
             android:layout_marginTop="4dp"
             android:src="@drawable/ic_death"
-            app:tint="@color/dark_yellow" />
+            app:tint="@color/dark_yellow"
+            android:contentDescription="@string/deceased" />
 
         <TextView
             android:id="@+id/deceasedTv"
