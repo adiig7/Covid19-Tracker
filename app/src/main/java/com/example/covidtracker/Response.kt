@@ -8,6 +8,7 @@ data class StatewiseItem(
     val deltadeaths: String? = null,
     val deltarecovered: String? = null,
     val active: String? = null,
+    val deltaactive: String? = null,
     val deltaconfirmed:String? = null,
     val state:String? = null,
     val statecode:String? = null,
